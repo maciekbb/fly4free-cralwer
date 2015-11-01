@@ -6,6 +6,10 @@ module Persistance
       def rkey(id)
         "fly4free:page:#{id}"
       end
+
+      def should_expire?
+        true
+      end
     end
   end
 end

@@ -7,11 +7,17 @@ module Persistance
 
       def store(id, content)
         $redis.set(rkey(id), content)
-        $redis.expireat(rkey(id), (Time.now + 10*60).to_i)
+        if should_expire?
+          $redis.expireat(rkey(id), (Time.now + 10*60).to_i)
+        end
       end
 
       def fetch(id)
         $redis.get(rkey(id))
+      end
+
+      def should_expire?
+        raise "Not implemented"
       end
 
       def rkey(id)
