@@ -3,12 +3,12 @@ require 'nokogiri'
 module Parsers
   class MainPage < Struct.new(:page_content)
     def analyze
-      Entities::MainPage.new(prepare_entries)
+      parsed_entities
     end
 
     private
 
-    def prepare_entries
+    def parsed_entities
       @entries ||= current_page.css('.entry').flat_map do |entry|
         parse_entry(entry)
       end

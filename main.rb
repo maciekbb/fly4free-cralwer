@@ -1,4 +1,5 @@
 require 'sinatra'
+require_relative './config/initializers/redis'
 
 ["crawlers", "entities", "parsers", "persistance"].each do |dir|
   Dir[File.dirname(__FILE__) + "/app/#{dir}/*.rb"].each do |file|
@@ -9,10 +10,18 @@ end
 
 get '/crawl/:page' do
   page_content = Crawlers::MainPage.new(params[:page]).fetch
-  Parsers::MainPage.new(page_content).analyze.to_json
+  entries = Parsers::MainPage.new(page_content).analyze
+
+  entries.each do |entry|
+    article_content = Crawlers::ArticlePage.from_url(entry[:url]).fetch
+    parsed_article = Parsers::ArticlePage.new(article_content).analyze
+    entry[:extended_content] = parsed_article[:extended_content]
+  end
+
+  entries.to_json
 end
 
 get '/crawl/article/:id' do
-  article_content = Crawlers::ArticlePage.new(id).fetch
+  article_content = Crawlers::ArticlePage.new(params[:id]).fetch
   Parsers::ArticlePage.new(article_content).analyze.to_json
 end
