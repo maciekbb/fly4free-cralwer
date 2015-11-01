@@ -1,12 +1,4 @@
 require 'sinatra'
-require 'pry'
-
-["crawlers", "entities", "parsers", "persistance"].each do |dir|
-  Dir[File.dirname(__FILE__) + "/../#{dir}/*.rb"].each do |file|
-    puts "#{__FILE__} Require #{file}"
-    require file
-  end
-end
 
 get '/crawl/:page' do
   page_content = Crawlers::MainPage.new(params[:page]).fetch
