@@ -12,7 +12,7 @@ module Persistance
             $redis.expireat(rkey(id), (Time.now + 10*60).to_i)
           end
         rescue
-          Rails.logger.warn("Could not write to redis")
+          puts "Redis error"
         end
       end
 
