@@ -6,9 +6,13 @@ module Persistance
       end
 
       def store(id, content)
-        $redis.set(rkey(id), content)
-        if should_expire?
-          $redis.expireat(rkey(id), (Time.now + 10*60).to_i)
+        begin
+          $redis.set(rkey(id), content)
+          if should_expire?
+            $redis.expireat(rkey(id), (Time.now + 10*60).to_i)
+          end
+        rescue
+          Rails.logger.warn("Could not write to redis")
         end
       end
 
