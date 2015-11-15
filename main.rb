@@ -15,7 +15,7 @@ get '/crawl/:page' do
   entries.each do |entry|
     article_content = Crawlers::ArticlePage.from_url(entry[:url]).fetch
     parsed_article = Parsers::ArticlePage.new(article_content).analyze
-    entry[:extended_content] = parsed_article[:extended_content]
+    entry.merge!(parsed_article)
   end
 
   entries.to_json
