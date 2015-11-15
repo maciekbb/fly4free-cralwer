@@ -9,7 +9,7 @@ module Persistance
         begin
           $redis.set(rkey(id), content)
           if should_expire?
-            $redis.expireat(rkey(id), (Time.now + 10*60).to_i)
+            $redis.expireat(rkey(id), (Time.now + expire_in).to_i)
           end
         rescue
           puts "Redis error"
@@ -21,6 +21,10 @@ module Persistance
       end
 
       def should_expire?
+        raise "Not implemented"
+      end
+
+      def expire_in
         raise "Not implemented"
       end
 

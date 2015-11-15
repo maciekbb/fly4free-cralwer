@@ -8,7 +8,11 @@ module Persistance
       end
 
       def should_expire?
-        false
+        true
+      end
+
+      def expire_in
+        60*60*24
       end
     end
   end
