@@ -10,7 +10,8 @@ module Parsers
     def parsed_content
       @parsed_content ||= {
         extended_content: current_page.css('.article__content').text,
-        comments: fetch_comments
+        comments: fetch_comments,
+        tags: current_page.css('.tags a').map { |e| e.text }
       }
     end
 
