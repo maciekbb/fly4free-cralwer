@@ -17,7 +17,8 @@ module Parsers
 
     def fetch_comments
       comments = []
-      current_page.css("div[id^='comment']")[1..-1].each do |comment|
+      selected_comments = current_page.css("div[id^='comment']")[1..-1] || []
+      selected_comments.each do |comment|
         comments << {
           rank: comment.css("span[id^='karma-']").text.to_i,
           content: comment.css(".comment__content").text
