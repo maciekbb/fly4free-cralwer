@@ -6,6 +6,7 @@ module Crawlers
       if persistance_klass.exists(persistance_key)
         persistance_klass.fetch(persistance_key)
       else
+        # TODO: css("body").text to optimize memory ?
         persistance_klass.store(persistance_key, current_page)
         current_page
       end

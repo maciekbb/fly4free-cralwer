@@ -21,6 +21,13 @@ get '/crawl/:page' do
   entries.to_json
 end
 
+get '/crawl/tag/:tag/page/:page' do
+  page_content = Crawlers::TagsPage.new(params[:tag], params[:page]).fetch
+  entries = Parsers::TagsPage.new(page_content).analyze
+
+  entries.to_json
+end
+
 get '/crawl/article/:id' do
   article_content = Crawlers::ArticlePage.new(params[:id]).fetch
   Parsers::ArticlePage.new(article_content).analyze.to_json
